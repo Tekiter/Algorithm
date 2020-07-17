@@ -1,3 +1,10 @@
+/**
+ * Created by Tekiter
+ * 
+ * 구간의 합을 구하는 세그먼트 트리이다. 
+ * 
+ */
+
 #include <vector>
 
 using namespace std;

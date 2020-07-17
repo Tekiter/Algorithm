@@ -1,3 +1,12 @@
+/**
+ * Created by Tekiter
+ * 
+ * 수학에서의 벡터를 표현하는 클래스이다.
+ * 기하 문제에서 사용한다. 
+ * 
+ */
+
+
 #include <utility>
 #include <cmath>
 

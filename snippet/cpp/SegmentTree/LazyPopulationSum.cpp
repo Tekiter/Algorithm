@@ -1,3 +1,10 @@
+/**
+ * Created by Tekiter
+ * 
+ * 구간의 합을 구하고, Lazy Population이 적용된 세그먼트 트리이다.
+ * 
+ */
+
 #include <vector>
 
 using namespace std;
@@ -35,6 +42,7 @@ public:
 	}
 
 	T update(int idx, T val, int cur, int cl, int cr) {
+		update_lazy(cur, cl, cr);
 		if (cr < idx || idx < cl) {
 			return tree[cur];
 		}
