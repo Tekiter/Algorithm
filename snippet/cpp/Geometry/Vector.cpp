@@ -12,7 +12,12 @@
 
 using namespace std;
 
-struct Vect {
+constexpr double PI() { return acos(0.0) * 2.0; };
+
+class Vect {
+
+    public:
+    
     double x, y;
     Vect() : x(0), y(0) {}
     Vect(double x, double y)  {
@@ -22,19 +27,50 @@ struct Vect {
     Vect(pair<double, double> a) : Vect(a.first, a.second) {}
     Vect(pair<double, double> a, pair<double, double> b) : Vect(b.first-a.first, b.second-a.second) {}
 
-    Vect operator+(const Vect& target) {
-        return Vect(x+target.x, y+target.y);
+    bool operator==(const Vect& rhs) const {
+        return x == rhs.x && y == rhs.y;
     }
 
-    Vect operator-() {
+    bool operator<(const Vect& rhs) const {
+        if (x == rhs.x) {
+            return y < rhs.y;
+        }
+        return x < rhs.x;
+    }
+
+    Vect operator+(const Vect& rhs) const {
+        return Vect(x+rhs.x, y+rhs.y);
+    }
+
+    Vect operator-() const {
         return Vect(-x, -y);
     }
 
-    Vect operator-(const Vect& target) {
-        return Vect(x-target.x, y-target.y);
+    Vect operator-(const Vect& rhs) const {
+        return Vect(x-rhs.x, y-rhs.y);
     }
 
-    double length() {
+    
+
+    Vect operator*(double rhs) {
+        return Vect(x*rhs, y*rhs);
+    }
+
+    double length() const {
         return sqrt(x*x+y*y);
     }
+
+    double dot(const Vect& rhs) const {
+        return x * rhs.x + y * rhs.y;
+    }
+
+    double cross(const Vect& rhs) const {
+        return x * rhs.y + y * rhs.x;
+    }
+
+    double polarAngle() const {
+        return fmod(atan2(y, x) + 2*PI(), 2*PI());
+    }
+
+
 };
