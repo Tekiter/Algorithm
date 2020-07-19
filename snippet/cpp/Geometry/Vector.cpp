@@ -16,6 +16,14 @@ constexpr double PI() { return acos(0.0) * 2.0; };
 
 class Vect {
 
+    bool doubleEquals(double a, double b) const {
+        double d = abs(a-b);
+        if (d < 1e-10) {
+            return true;
+        }
+        return d <= 1e-8 * max(abs(a), abs(b));
+    }
+
     public:
     
     double x, y;
@@ -28,14 +36,27 @@ class Vect {
     Vect(pair<double, double> a, pair<double, double> b) : Vect(b.first-a.first, b.second-a.second) {}
 
     bool operator==(const Vect& rhs) const {
-        return x == rhs.x && y == rhs.y;
+        return doubleEquals(x, rhs.x) && doubleEquals(y, rhs.y);
     }
 
     bool operator<(const Vect& rhs) const {
-        if (x == rhs.x) {
+        if (doubleEquals(x, rhs.x)) {
+            if (doubleEquals(y, rhs.y)) {
+                return false;
+            }
             return y < rhs.y;
         }
         return x < rhs.x;
+    }
+
+    bool operator>(const Vect& rhs) const  {
+        if (doubleEquals(x, rhs.x)) {
+            if (doubleEquals(y, rhs.y)) {
+                return false;
+            }
+            return y > rhs.y;
+        }
+        return x > rhs.x;
     }
 
     Vect operator+(const Vect& rhs) const {
@@ -60,6 +81,10 @@ class Vect {
         return sqrt(x*x+y*y);
     }
 
+    Vect normalize() const {
+        return Vect(x / length(), y / length());
+    }
+
     double dot(const Vect& rhs) const {
         return x * rhs.x + y * rhs.y;
     }
@@ -72,4 +97,3 @@ class Vect {
         return fmod(atan2(y, x) + 2*PI(), 2*PI());
     }
 };
-
