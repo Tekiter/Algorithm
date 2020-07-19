@@ -65,12 +65,11 @@ class Vect {
     }
 
     double cross(const Vect& rhs) const {
-        return x * rhs.y + y * rhs.x;
+        return x * rhs.y - y * rhs.x;
     }
 
     double polarAngle() const {
         return fmod(atan2(y, x) + 2*PI(), 2*PI());
     }
-
-
 };
+
