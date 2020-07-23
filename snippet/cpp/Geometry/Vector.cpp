@@ -15,9 +15,10 @@ using namespace std;
 
 constexpr double PI() { return acos(0.0) * 2.0; };
 
-class Vect {
+template <class T>
+class VectBase {
 
-    bool doubleEquals(double a, double b) const {
+    bool valueEquals(double a, double b) const {
         double d = abs(a-b);
         if (d < 1e-10) {
             return true;
@@ -25,24 +26,28 @@ class Vect {
         return d <= 1e-8 * max(abs(a), abs(b));
     }
 
+    bool valueEquals(T a, T b) const {
+        return a == b;
+    }
+
     public:
     
-    double x, y;
-    Vect() : x(0), y(0) {}
-    Vect(double x, double y)  {
+    T x, y;
+    VectBase() : x(0), y(0) {}
+    VectBase(T x, T y)  {
         this->y = y;
         this->x = x;
     }
-    Vect(pair<double, double> a) : Vect(a.first, a.second) {}
-    Vect(pair<double, double> a, pair<double, double> b) : Vect(b.first-a.first, b.second-a.second) {}
+    VectBase(pair<T, T> a) : VectBase(a.first, a.second) {}
+    VectBase(pair<T, T> a, pair<T, T> b) : VectBase(b.first-a.first, b.second-a.second) {}
 
-    bool operator==(const Vect& rhs) const {
-        return doubleEquals(x, rhs.x) && doubleEquals(y, rhs.y);
+    bool operator==(const VectBase& rhs) const {
+        return valueEquals(x, rhs.x) && valueEquals(y, rhs.y);
     }
 
-    bool operator<(const Vect& rhs) const {
-        if (doubleEquals(x, rhs.x)) {
-            if (doubleEquals(y, rhs.y)) {
+    bool operator<(const VectBase& rhs) const {
+        if (valueEquals(x, rhs.x)) {
+            if (valueEquals(y, rhs.y)) {
                 return false;
             }
             return y < rhs.y;
@@ -50,9 +55,9 @@ class Vect {
         return x < rhs.x;
     }
 
-    bool operator>(const Vect& rhs) const  {
-        if (doubleEquals(x, rhs.x)) {
-            if (doubleEquals(y, rhs.y)) {
+    bool operator>(const VectBase& rhs) const  {
+        if (valueEquals(x, rhs.x)) {
+            if (valueEquals(y, rhs.y)) {
                 return false;
             }
             return y > rhs.y;
@@ -60,37 +65,41 @@ class Vect {
         return x > rhs.x;
     }
 
-    Vect operator+(const Vect& rhs) const {
-        return Vect(x+rhs.x, y+rhs.y);
+    VectBase operator+(const VectBase& rhs) const {
+        return VectBase(x+rhs.x, y+rhs.y);
     }
 
-    Vect operator-() const {
-        return Vect(-x, -y);
+    VectBase operator-() const {
+        return VectBase(-x, -y);
     }
 
-    Vect operator-(const Vect& rhs) const {
-        return Vect(x-rhs.x, y-rhs.y);
+    VectBase operator-(const VectBase& rhs) const {
+        return VectBase(x-rhs.x, y-rhs.y);
     }
 
     
 
-    Vect operator*(double rhs) {
-        return Vect(x*rhs, y*rhs);
+    VectBase operator*(T rhs) {
+        return VectBase(x*rhs, y*rhs);
     }
 
     double length() const {
         return sqrt(x*x+y*y);
     }
 
-    Vect normalize() const {
-        return Vect(x / length(), y / length());
+    double length2() const {
+        return x*x + y*y;
     }
 
-    double dot(const Vect& rhs) const {
+    VectBase normalize() const {
+        return VectBase(x / length(), y / length());
+    }
+
+    T dot(const VectBase& rhs) const {
         return x * rhs.x + y * rhs.y;
     }
 
-    double cross(const Vect& rhs) const {
+    T cross(const VectBase& rhs) const {
         return x * rhs.y - y * rhs.x;
     }
 
@@ -98,3 +107,4 @@ class Vect {
         return fmod(atan2(y, x) + 2*PI(), 2*PI());
     }
 };
+
