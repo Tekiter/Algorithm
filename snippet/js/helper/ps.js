@@ -19,35 +19,51 @@ const ps = (function (process) {
     main(f) {
       f()
         .catch((err) => {
-          throw err;
+          console.error(err);
+          process.exit(1);
         })
         .finally(() => {
           rl.close();
         });
+    },
+    use(name, f) {
+      this[name] = f;
     },
     readLine: async function readLine() {
       return new Promise((resolve) => {
         if (cursor < lines.length) {
           resolve(lines[cursor++]);
         } else {
-          setTimeout(
-            () =>
-              readLine().then((line) => {
-                resolve(line);
-              })
+          setTimeout(() =>
+            readLine().then((line) => {
+              resolve(line);
+            })
           );
         }
       });
     },
-    async readLineAsArray() {
-      const line = await this.readLine()
-      return line.split(/\s/).map(t=>parseInt(t))
+    async readArrayLine() {
+      const line = await this.readLine();
+      return line.split(/\s/).map((t) => parseInt(t));
     },
     write(data) {
       process.stdout.write(data + "");
     },
     writeLine(data) {
-      process.stdout.write(data + "\n");
+      process.stdout.write((data === undefined ? "" : data) + "\n");
+    },
+    range(start, end, step = 1) {
+      if (end === undefined) {
+        end = start;
+        start = 0;
+      }
+      return {
+        [Symbol.iterator]: function* () {
+          for (let i = start; i < end; i += step) {
+            yield i;
+          }
+        },
+      };
     },
   };
 })(process);
