@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "tuple": "cpp",
+        "ostream": "cpp",
+        "iostream": "cpp",
+        "*.tcc": "cpp"
+    },
+    "editor.formatOnSave": false
+}
